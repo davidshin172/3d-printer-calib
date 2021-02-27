@@ -3,6 +3,7 @@ import sys
 from params import defaults
 
 DESC='''Dump out GCode for calibrating E-step (i.e. How many steps per mm?).
+
 Based on https://mattshub.com/blogs/blog/extruder-calibration.'''
 
 GCODE_TEMPLATE ='''; Don't forget to:
@@ -18,7 +19,7 @@ G1 E{ed} ; Try to extrude {ed}mm
 M104 S0 T{idx} ; Turn off hotend
 ; Now, measure leftover distance'''
 
-parser = argparse.ArgumentParser(description=DESC)
+parser = argparse.ArgumentParser(description=DESC, formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('--target_temp', type=int, required=True, help='Extrusion temperature to calibrate at.')
 parser.add_argument('--tool_index', type=int, default=0, help='Index of the extruder to use.')
 parser.add_argument('--extrusion_distance', type=int, default=defaults.EXTRUDE_MM, help='Distance to extrude.')
