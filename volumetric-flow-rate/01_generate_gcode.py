@@ -26,7 +26,9 @@ G4 S10 ; Wait for primed material to clear
 GCODE_BODY_TEMPLATE = '''G1 F{rate} ; Set extrusion speed
 G1 E{dist} ; Extrude {dist}mm
 G4 S0 ; Brief wait
-G1 E-{retract} F{retract_rate} ; Retract
+'''
+
+GCODE_RETRACT_TEMPLATE = '''G1 E-{retract} F{retract_rate} ; Retract
 '''
 
 GCODE_FOOTER_TEMPLATE='''M104 S0 T{idx} ; Turn off hotend'''
@@ -43,7 +45,7 @@ parser.add_argument('--target_flowrates', type=float, nargs='+', default=default
 parser.add_argument('--filament_diameter', type=float, default=1.75, help='Filament diameter (mm)')
 parser.add_argument('--extrusion_distance', type=float, default=100, help='Extrusion distance (mm)')
 
-parser.add_argument('--retract_distance', type=int, required=True, help='Retract distance.')
+parser.add_argument('--retract_distance', type=int, default=0, help='Retract distance.')
 parser.add_argument('--retract_rate', type=int, default=1000, help='Retract feedrate.')
 parser.add_argument('--initial_prime_distance', type=int, default=10, help='Initial prime distance.')
 parser.add_argument('--prime_distance', type=int, default=0, help='Prime distance between different rates.')
@@ -57,10 +59,13 @@ target_speeds = map(lambda x: calculate_feedrate(x, args.filament_diameter, args
 for i, s in enumerate(target_speeds):
     print('; Feedrate: {} mm/s'.format(s))
     if i != 0:
-        print(GCODE_BODY_UNRETRACT_TEMPLATE.format(retract=args.retract_distance, retract_rate=args.retract_rate))
+        if args.retract_distance != 0:
+            print(GCODE_BODY_UNRETRACT_TEMPLATE.format(retract=args.retract_distance, retract_rate=args.retract_rate))
         if args.prime_distance != 0:
             print(GCODE_BODY_PRIME_TEMPLATE.format(prime=args.prime_distance, prime_rate=args.prime_rate))
-    print(GCODE_BODY_TEMPLATE.format(rate=s, dist=args.extrusion_distance, retract=args.retract_distance, retract_rate=args.retract_rate))
+    print(GCODE_BODY_TEMPLATE.format(rate=s, dist=args.extrusion_distance))
+    if args.retract_distance != 0:
+        print(GCODE_RETRACT_TEMPLATE.format(retract=args.retract_distance, retract_rate=args.retract_rate))
 
 print('; Footer')
 print(GCODE_FOOTER_TEMPLATE.format(idx=args.tool_index))
