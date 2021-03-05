@@ -5,7 +5,7 @@ from params import defaults
 
 DESC='''Generate GCode for volumetric flow rate performance.
 
-Based on https://mattshub.com/blogs/blog/extruder-calibration://www.cnckitchen.com/blog/testing-bimetallic-heat-breaks'''
+Based on http://www.cnckitchen.com/blog/testing-bimetallic-heat-breaks'''
 
 GCODE_HEADER_TEMPLATE ='''; Flow rates: {rates}
 G28 ; Go home
@@ -29,6 +29,11 @@ G4 S0 ; Brief wait
 '''
 
 GCODE_RETRACT_TEMPLATE = '''G1 E-{retract} F{retract_rate} ; Retract
+'''
+
+GCODE_WAIT_TEMPLATE = '''M117 Collect {rate}mm/s
+G4 S10 ; Wait for material to be collected
+M117 Ended {rate}mm/s
 '''
 
 GCODE_FOOTER_TEMPLATE='''M104 S0 T{idx} ; Turn off hotend'''
@@ -66,6 +71,7 @@ for i, s in enumerate(target_speeds):
     print(GCODE_BODY_TEMPLATE.format(rate=s, dist=args.extrusion_distance))
     if args.retract_distance != 0:
         print(GCODE_RETRACT_TEMPLATE.format(retract=args.retract_distance, retract_rate=args.retract_rate))
+    print(GCODE_WAIT_TEMPLATE.format(rate=s))
 
 print('; Footer')
 print(GCODE_FOOTER_TEMPLATE.format(idx=args.tool_index))

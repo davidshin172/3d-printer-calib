@@ -4,7 +4,7 @@ from params import defaults
 
 DESC='''Calculate volumetric flow performance.
 
-Based on https://mattshub.com/blogs/blog/extruder-calibration://www.cnckitchen.com/blog/testing-bimetallic-heat-breaks'''
+Based on http://www.cnckitchen.com/blog/testing-bimetallic-heat-breaks'''
 
 parser = argparse.ArgumentParser(description=DESC, formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('--target_flowrates', type=float, nargs='+', default=defaults.FLOW_RATES, help='Target volumetric flow rates (mm^3/s)')
