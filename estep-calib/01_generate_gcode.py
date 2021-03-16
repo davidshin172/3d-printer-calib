@@ -16,6 +16,7 @@ M83 ; Relative mode
 M109 S{temp} T{idx}; Set and wait for target temperature
 G1 F50 ; Decrease feed rate to remove slip from equation
 G1 E{ed} ; Try to extrude {ed}mm
+M400 ; Wait for moves to complete
 M104 S0 T{idx} ; Turn off hotend
 ; Now, measure leftover distance'''
 

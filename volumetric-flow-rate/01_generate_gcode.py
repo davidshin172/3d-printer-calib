@@ -14,21 +14,26 @@ G1 Z50 ; Move to Z = 50mm to make space for extruded material
 M83 ; Relative mode
 M109 S{temp} T{idx}; Set and wait for target temperature
 G1 E{init_prime} F{prime_rate}; Prime
+M400 ; Wait for move done
 G4 S10 ; Wait for primed material to clear
 '''
 
 GCODE_BODY_UNRETRACT_TEMPLATE='''G1 E{retract} F{retract_rate}; Unretract
+M400 ; Wait for move done
 '''
 GCODE_BODY_PRIME_TEMPLATE='''G1 E{prime} F{prime_rate}; Prime
+M400 ; Wait for move done
 G4 S10 ; Wait for primed material to clear
 '''
 
 GCODE_BODY_TEMPLATE = '''G1 F{rate} ; Set extrusion speed
 G1 E{dist} ; Extrude {dist}mm
+M400 ; Wait for move done
 G4 S0 ; Brief wait
 '''
 
 GCODE_RETRACT_TEMPLATE = '''G1 E-{retract} F{retract_rate} ; Retract
+M400 ; Wait for move done
 '''
 
 GCODE_WAIT_TEMPLATE = '''M117 Collect {rate}mm/s
