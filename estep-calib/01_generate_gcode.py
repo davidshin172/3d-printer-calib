@@ -15,8 +15,6 @@ G1 Z50 ; Move to Z = 50mm to make space for extruded material
 M83 ; Relative mode
 M109 S{temp} T{idx}; Set and wait for target temperature
 G1 F50 ; Decrease feed rate to remove slip from equation
-G1 E10 ; Prime
-G4 S2 ; Wait a bit
 G1 E{ed} ; Try to extrude {ed}mm
 M104 S0 T{idx} ; Turn off hotend
 ; Now, measure leftover distance'''
