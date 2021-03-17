@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser(description=DESC, formatter_class=argparse.RawT
 parser.add_argument('--extrusion_width', type=float, required=True, help='Target extrusion width.')
 parser.add_argument('--num_walls', type=int, required=True, help='Number of walls.')
 parser.add_argument('--measurements', type=float, required=True, nargs='+', help='Number of walls.')
+parser.add_argument('--old', type=float, default=100.0, help='Old flow rate percentage.')
 
 args = parser.parse_args()
 
@@ -27,4 +28,4 @@ target_thickness = args.extrusion_width * args.num_walls
 print('Target thickness: {:.2f}mm'.format(target_thickness))
 
 flow_rate = target_thickness / measured_average
-print('Flow rate: {:.0f}%'.format(flow_rate * 100))
+print('Flow rate: {:.1f}%'.format(flow_rate * args.old))
